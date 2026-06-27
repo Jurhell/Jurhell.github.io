@@ -135,6 +135,28 @@
 			/* ── Console prompt ── */
 			.console-prompt { font-family: var(--font-mono); font-size: 0.78em; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; }
 			.console-prompt .p { color: var(--accent); }
+
+			/* ── Project image sizing ── */
+			#project-looterland .image {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			#project-looterland .image img {
+				width: 350px;
+				height: 200px;
+				object-fit: contain;
+			}
+			#project-escape .image {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			#project-escape .image img {
+				width: 250px;
+				height: 250px;
+				object-fit: contain;
+			}
 		</style>
 	</head>
 	<body class="landing is-preload">
@@ -197,7 +219,7 @@
  
 			<!-- Two — Projects -->
 			<section id="two" class="wrapper alt style2">
-				<section class="spotlight">
+				<section class="spotlight" id="project-looterland">
 					<div class="image"><img src="images/looterlandthumbnail.png" alt="Looter Land" /></div><div class="content">
 						<h2>Looter Land</h2>
 						<p>Add your project description here — what it is, what you built, and what makes it interesting. Replace this spotlight with a screenshot once you have one.</p>
@@ -206,7 +228,7 @@
 						</div>
 					</div>
 				</section>
-				<section class="spotlight">
+				<section class="spotlight" id="project-escape">
 					<div class="image"><img src="images/escapevelocitythumbnail.png" alt="Escape Velocity" /></div><div class="content">
 						<h2>Escape Velocity</h2>
 						<p>Describe your second project here. Highlight the systems you built, any interesting technical challenges you solved, and the result.</p>
