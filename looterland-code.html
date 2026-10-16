@@ -173,7 +173,7 @@
 			<article id="main">
 				<header>
 					<h2>Looter Land — Code Breakdown</h2>
-					<p>// How I built it</p>
+					<p>// How I helped build it</p>
 				</header>
 
 				<section class="wrapper style5">
@@ -188,9 +188,9 @@
 							<h3>Cop AI Behaviors</h3>
 							<p>
 								There are two AI behaviors used for the cops in the game.</p>
-              <p>A simple Pursue behavior is used for the main cop of the game. That causes it to constantly chase the player.</p>
+              <p>A simple Seek behavior is used for the main cop of the game. That causes it to constantly chase the player.</p>
               <p>The rest of the cops use a Patrol behavior that causes them to patrol a certain section of the store until they spot the player
-                and give chase. Where they then switch to a Seek behavior.</p>
+                and give chase. Where they then switch to a Pursue behavior.</p>
 
 							<!-- Screenshot: replace src with your image path, e.g. images/looterland-screenshot1.png -->
 							<div class="screenshot-wrap">
@@ -199,17 +199,17 @@
 							</div>
 
 							<p>
-								Continue explaining the system here. You can add as much or as little
-								detail as you like. Talk about your approach, decisions made, and what
-								you'd do differently.
+								The Seek behavior itself is very simple as most the is done by Unity in the NavMeshAgent class.
+								Most of the work done by me pertains to rotating the cop's model and smoothing it's movement.
 							</p>
 
 							<!-- Code snippet: replace the content inside <pre> with your actual code -->
 							<div class="code-block">
 <pre><span class="comment">// Paste your code here — replace this entire block with a real snippet</span>
-<span class="keyword">private void</span> <span class="type">ExampleMethod</span>()
+<span class="keyword">private void </span> <span class="type">Update</span>()
 {
     <span class="comment">// Your code goes here</span>
+	
 }</pre>
 							</div>
 						</div>
