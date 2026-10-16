@@ -211,11 +211,65 @@
 
     <span class="comment">// Smoothing agent movement to prevent jittering</span>
     _cop.transform.position = <span class="type">Vector3</span>.SmoothDamp(_cop.transform.position, _cop.nextPosition, <span class="keyword">ref</span> _velocity, 0.05f);
+}
+
+<span class="keyword">private void</span> <span class="type">FixedUpdate</span>()
+{
+    <span class="keyword">if</span> (_suppressed)
+        <span class="keyword">return</span>;
+
+    <span class="comment">// Checking if agent is rotating</span>
+    <span class="keyword">if</span> (RotationCheck())
+        <span class="comment">// Scaling agent's acceleration down by its speed value if so</span>
+        _accelerationSpeed = MapValue(0, _cop.speed, _cop.acceleration, 20, 1) - 2;
+
+    SpeedScale();
 }</pre>
 							</div>
 
 							<div class="code-block">
-<pre><span class="comment">// Paste your code here</span></pre>
+<pre><span class="comment">// Scales the agent's speed with its distance from the player (Fast when far, slower when close)</span>
+<span class="keyword">private void</span> <span class="type">SpeedScale</span>()
+{
+    <span class="keyword">float</span> seekMagnitude = (_target.transform.position - _cop.transform.position).magnitude;
+
+    <span class="comment">// Scaling agent's speed using distance from player and its max speed times 1.5</span>
+    _cop.speed = MapValue(0, seekMagnitude, _maxSpeed * 1.5f, 3, 1);
+}
+
+<span class="comment">// Checks if the agent is currently rotating</span>
+<span class="keyword">private bool</span> <span class="type">RotationCheck</span>()
+{
+    <span class="type">Vector3</span> currentFacing = _cop.transform.forward;
+
+    <span class="comment">// Storing how many degrees the agent is rotating per second</span>
+    _currentAngularVelocity = <span class="type">Vector3</span>.Angle(currentFacing, _lastFacing) / <span class="type">Time</span>.deltaTime;
+
+    _lastFacing = currentFacing;
+
+    <span class="comment">// Checking if degrees rotated per second is greater than 1</span>
+    <span class="keyword">bool</span> agentRotating = _currentAngularVelocity > 1f;
+
+    <span class="comment">// Returning true or false if so</span>
+    <span class="keyword">if</span> (agentRotating)
+        <span class="keyword">return true</span>;
+    <span class="keyword">else</span>
+        <span class="keyword">return false</span>;
+}
+
+<span class="comment">/// &lt;summary&gt;</span>
+<span class="comment">/// Returns a number between two values/ranges.</span>
+<span class="comment">/// &lt;/summary&gt;</span>
+<span class="comment">/// &lt;param name="inputMin"&gt;The lowest number of the range input.&lt;/param&gt;</span>
+<span class="comment">/// &lt;param name="inputMax"&gt;The largest number of the range input.&lt;/param&gt;</span>
+<span class="comment">/// &lt;param name="outputMin"&gt;The lowest number of the range output&lt;/param&gt;</span>
+<span class="comment">/// &lt;param name="outputMax"&gt;The largest number of the range output&lt;/param&gt;</span>
+<span class="comment">/// &lt;param name="value"&gt;Input value.&lt;/param&gt;</span>
+<span class="comment">/// &lt;returns&gt;The number between the entered ranges.&lt;/returns&gt;</span>
+<span class="keyword">private float</span> <span class="type">MapValue</span>(<span class="keyword">float</span> inputMin, <span class="keyword">float</span> inputMax, <span class="keyword">float</span> outputMin, <span class="keyword">float</span> outputMax, <span class="keyword">float</span> value)
+{
+    <span class="keyword">return</span> outputMin + ((outputMax - outputMin) / (inputMax - inputMin)) * (value - inputMin);
+}</pre>
 							</div>
 
 							<div class="code-block">
