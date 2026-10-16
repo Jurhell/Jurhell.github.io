@@ -56,7 +56,6 @@
 				text-align: center;
 			}
 			.screenshot-wrap img {
-				/* ── RESIZE: change width/height to suit your screenshot ── */
 				width: 100%;
 				max-width: 700px;
 				height: auto;
@@ -109,7 +108,6 @@
 				flex: 1 1 300px;
 			}
 			.split-row .split-image img {
-				/* ── RESIZE: change width/height to suit your screenshot ── */
 				width: 100%;
 				height: auto;
 				border-radius: 4px;
@@ -181,49 +179,53 @@
 
 						<p class="back-link"><a href="index.html#two">← Back to Projects</a> &nbsp;|&nbsp; <a href="looterland-overview.html">View Overview →</a></p>
 
-						<!-- ═══════════════════════════════════════════════
-						     SECTION 1 — Replace with your first system/feature
-						     ═══════════════════════════════════════════════ -->
+						<!-- SECTION 1 — Cop AI Behaviors -->
 						<div class="code-section">
 							<h3>Cop AI Behaviors</h3>
 							<p>
 								There are two AI behaviors used for the cops in the game.</p>
-              <p>A simple Seek behavior is used for the main cop of the game. That causes it to constantly chase the player.</p>
-              <p>The rest of the cops use a Patrol behavior that causes them to patrol a certain section of the store until they spot the player
-                and give chase. Where they then switch to a Pursue behavior.</p>
+							<p>A simple Seek behavior is used for the main cop of the game. That causes it to constantly chase the player.</p>
+							<p>The rest of the cops use a Patrol behavior that causes them to patrol a certain section of the store until they spot the player
+								and give chase. Where they then switch to a Pursue behavior.</p>
 
-							<!-- Screenshot: replace src with your image path, e.g. images/looterland-screenshot1.png -->
 							<div class="screenshot-wrap">
 								<img src="images/looterland-screenshot1.png" alt="Screenshot 1" />
 								<p class="screenshot-caption">Caption describing what this screenshot shows</p>
 							</div>
 
 							<p>
-								The Seek behavior itself is very simple as most the is done by Unity in the NavMeshAgent class.
-								Most of the work done by me pertains to rotating the cop's model and smoothing it's movement.
+								The Seek behavior itself is very simple as most the work is done by Unity in the NavMeshAgent class.
+								Most of the work done by me pertains to rotating the cop's model and smoothing its movement.
 							</p>
 
-							<!-- Code snippet: replace the content inside <pre> with your actual code -->
 							<div class="code-block">
-<pre><span class="comment">// Paste your code here — replace this entire block with a real snippet</span>
-<span class="keyword">private void </span> <span class="type">Update</span>()
+<pre><span class="keyword">private void</span> <span class="type">Update</span>()
 {
-    <span class="comment">// Your code goes here</span>
-	
+    <span class="keyword">if</span> (!_cop.enabled)
+        <span class="keyword">return</span>;
+
+    _cop.destination = _target.transform.position;
+
+    <span class="comment">// Making agent face the direction it's travelling using its position and velocity</span>
+    _cop.transform.LookAt(_cop.transform.position + _cop.velocity);
+
+    <span class="comment">// Smoothing agent movement to prevent jittering</span>
+    _cop.transform.position = <span class="type">Vector3</span>.SmoothDamp(
+        _cop.transform.position,
+        _cop.nextPosition,
+        <span class="keyword">ref</span> _velocity,
+        0.05f
+    );
 }</pre>
 							</div>
 						</div>
 
-						<!-- ═══════════════════════════════════════════════
-						     SECTION 2 — Replace with your second system/feature
-						     ═══════════════════════════════════════════════ -->
+						<!-- SECTION 2 — placeholder -->
 						<div class="code-section">
 							<h3>// 02 — System Name Here</h3>
 
-							<!-- Side-by-side layout: screenshot left, text right -->
 							<div class="split-row">
 								<div class="split-image">
-									<!-- Replace src with your image, e.g. images/looterland-screenshot2.png -->
 									<img src="images/looterland-screenshot2.png" alt="Screenshot 2" />
 								</div>
 								<div class="split-text">
@@ -250,10 +252,7 @@
 							</div>
 						</div>
 
-						<!-- ═══════════════════════════════════════════════
-						     SECTION 3 — Replace with your third system/feature
-						     (duplicate this block to add more sections)
-						     ═══════════════════════════════════════════════ -->
+						<!-- SECTION 3 — placeholder -->
 						<div class="code-section">
 							<h3>// 03 — System Name Here</h3>
 							<p>
@@ -272,9 +271,6 @@
 							</div>
 						</div>
 
-						<!-- ═══════════════════════════════════════════════
-						     Bottom nav
-						     ═══════════════════════════════════════════════ -->
 						<hr />
 						<ul class="actions">
 							<li><a href="looterland-overview.html" class="button primary">View Overview</a></li>
