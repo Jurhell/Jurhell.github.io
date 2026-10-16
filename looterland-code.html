@@ -210,12 +210,7 @@
     _cop.transform.LookAt(_cop.transform.position + _cop.velocity);
 
     <span class="comment">// Smoothing agent movement to prevent jittering</span>
-    _cop.transform.position = <span class="type">Vector3</span>.SmoothDamp(
-        _cop.transform.position,
-        _cop.nextPosition,
-        <span class="keyword">ref</span> _velocity,
-        0.05f
-    );
+    _cop.transform.position = <span class="type">Vector3</span>.SmoothDamp(_cop.transform.position, _cop.nextPosition, <span class="keyword">ref</span> _velocity, 0.05f);
 }</pre>
 							</div>
 						</div>
