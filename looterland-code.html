@@ -133,6 +133,16 @@
 				text-transform: uppercase;
 			}
 
+			/* ── Between-block caption text ── */
+			.code-caption {
+				font-family: var(--font-mono);
+				font-size: 0.78em;
+				letter-spacing: 0.06em;
+				color: rgba(255,255,255,0.45);
+				margin: 1em 0 0.3em;
+				font-style: italic;
+			}
+
 			/* ── Back button ── */
 			.back-link {
 				font-family: var(--font-mono);
@@ -198,6 +208,8 @@
 								Most of the work done by me pertains to rotating the cop's model and smoothing its movement.
 							</p>
 
+							<p class="code-caption">// Add text here — describe what this code does or why you wrote it this way.</p>
+
 							<div class="code-block">
 <pre><span class="keyword">void</span> <span class="type">Update</span>()
 {
@@ -226,6 +238,8 @@
     SpeedScale();
 }</pre>
 							</div>
+
+							<p class="code-caption">// Add text here — describe what this code does or why you wrote it this way.</p>
 
 							<div class="code-block">
 <pre><span class="comment">// Scales the agent's speed with its distance from the player (Fast when far, slower when close)</span>
@@ -273,7 +287,49 @@
 							</div>
 
 							<div class="code-block">
-<pre><span class="comment">// Paste your code here</span></pre>
+<pre>[<span class="type">RequireComponent</span>(<span class="keyword">typeof</span>(<span class="type">NavMeshAgent</span>))]
+<span class="keyword">public class</span> <span class="type">CopSeekBehavior</span> : <span class="type">MonoBehaviour</span>
+{
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"What the cop will be chasing. (The Player)"</span>)]
+    <span class="keyword">private</span> <span class="type">GameObject</span> _target;
+
+    <span class="keyword">private</span> <span class="type">NavMeshAgent</span> _cop;
+    <span class="keyword">private float</span> _accelerationSpeed;
+    <span class="keyword">private float</span> _maxSpeed;
+    <span class="keyword">private float</span> _currentAngularVelocity;
+
+    <span class="keyword">private</span> <span class="type">Vector3</span> _velocity = <span class="type">Vector3</span>.zero;
+    <span class="keyword">private</span> <span class="type">Vector3</span> _lastFacing;
+
+    <span class="keyword">private bool</span> _suppressed;
+
+    <span class="comment">// Start is called before the first frame update</span>
+    <span class="keyword">void</span> <span class="type">Awake</span>()
+    {
+        _cop = GetComponent&lt;<span class="type">NavMeshAgent</span>&gt;();
+        _cop.updateRotation = <span class="keyword">false</span>;
+        _accelerationSpeed = _cop.acceleration;
+        _maxSpeed = _cop.speed;
+
+        _suppressed = <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">public void</span> <span class="type">SuppressAcceleration</span>(<span class="keyword">float</span> duration)
+    {
+        _cop.acceleration = 0;
+
+        _suppressed = <span class="keyword">true</span>;
+
+        Invoke(<span class="string">"RestoreAcceleration"</span>, duration);
+    }
+
+    <span class="keyword">private void</span> <span class="type">RestoreAcceleration</span>()
+    {
+        _suppressed = <span class="keyword">false</span>;
+
+        _cop.acceleration = _accelerationSpeed;
+    }
+</pre>
 							</div>
 						</div>
 
