@@ -138,7 +138,7 @@
 				font-family: var(--font-mono);
 				font-size: 0.78em;
 				letter-spacing: 0.06em;
-				color: rgba(255,255,255,0.45);
+				color: #333;
 				margin: 1em 0 0.3em;
 				font-style: italic;
 			}
@@ -191,7 +191,8 @@
 
 						<!-- SECTION 1 — Cop AI Behaviors -->
 						<div class="code-section">
-							<h3>Cop AI Behaviors</h3>
+							<h2>AI Behaviors</h2>
+							<h3>Cop Seek Behavior</h3>
 							<p>
 								There are two AI behaviors used for the cops in the game.</p>
 							<p>A simple Seek behavior is used for the main cop of the game. That causes it to constantly chase the player.</p>
@@ -205,10 +206,10 @@
 
 							<p>
 								The Seek behavior itself is very simple as most the work is done by Unity in the NavMeshAgent class.
-								Most of the work done by me pertains to rotating the cop's model and smoothing its movement.
+								Most of the work done by me in Update deals with rotating the cop's model and smoothing its movement.
+								In FixedUpdate I'm constantly having the cop's speed scale with it's distance from the player character, 
+								and scale moreso when rotating.
 							</p>
-
-							<p class="code-caption">// Add text here — describe what this code does or why you wrote it this way.</p>
 
 							<div class="code-block">
 <pre><span class="keyword">void</span> <span class="type">Update</span>()
@@ -239,7 +240,9 @@
 }</pre>
 							</div>
 
-							<p class="code-caption">// Add text here — describe what this code does or why you wrote it this way.</p>
+							<p class="code-caption">Here are the funtions that used in scaling the cop's speed and checking
+							its rotation. Used to have the cop move faster when far and slower when close, and also slower when
+							turning to allow the player to gain distance on sharp turns.</p>
 
 							<div class="code-block">
 <pre><span class="comment">// Scales the agent's speed with its distance from the player (Fast when far, slower when close)</span>
@@ -333,56 +336,9 @@
 							</div>
 						</div>
 
-						<!-- SECTION 1b — placeholder -->
-						<div class="code-section">
-							<h3>// 02 — System Name Here</h3>
-							<p>
-								Describe this system or feature here. What does it do, why did you build it this way?
-							</p>
-
-							<div class="screenshot-wrap">
-								<img src="images/looterland-screenshot2.png" alt="Screenshot 2" />
-								<p class="screenshot-caption">Caption describing what this screenshot shows</p>
-							</div>
-
-							<p>Continue explaining the system here.</p>
-
-							<div class="code-block">
-<pre><span class="comment">// Paste your code here</span></pre>
-							</div>
-						</div>
-
-						<!-- SECTION 1c — placeholder -->
-						<div class="code-section">
-							<h3>// 03 — System Name Here</h3>
-							<p>
-								Describe this system or feature here. What does it do, why did you build it this way?
-							</p>
-
-							<div class="screenshot-wrap">
-								<img src="images/looterland-screenshot3.png" alt="Screenshot 3" />
-								<p class="screenshot-caption">Caption describing what this screenshot shows</p>
-							</div>
-
-							<p>Continue explaining the system here.</p>
-
-							<div class="code-block">
-<pre><span class="comment">// Paste your code here</span></pre>
-							</div>
-						</div>
-
-						<!-- SECTION 1 extra slots -->
-						<div class="code-block">
-<pre><span class="comment">// Paste your code here</span></pre>
-						</div>
-
-						<div class="code-block">
-<pre><span class="comment">// Paste your code here</span></pre>
-						</div>
-
 						<!-- SECTION 2 — placeholder -->
 						<div class="code-section">
-							<h3>// 02 — System Name Here</h3>
+							<h3>Cop Patrol Behavior</h3>
 
 							<div class="split-row">
 								<div class="split-image">
