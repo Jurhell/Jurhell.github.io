@@ -472,6 +472,36 @@
         <span class="keyword">return</span>;
 }</pre>
 							</div>
+						<p class="code-caption">The Pursue behavior found in the script is a more elaborate version of the Seek behavior
+						found in the main cop. Here the cop will try to predict where the player will go and aim towards that when chasing.</p>
+
+							<div class="code-block">
+<pre><span class="keyword">private void</span> <span class="type">Pursue</span>()
+{
+    <span class="comment">// Storing direction to target</span>
+    <span class="type">Vector3</span> targetDirection = _target.transform.position - _cop.transform.position;
+
+    <span class="comment">// Storing variables needed for pursue behavior</span>
+    <span class="keyword">float</span> relativeHead = <span class="type">Vector3</span>.Angle(_cop.transform.forward, _cop.transform.TransformVector(_target.transform.forward));
+    <span class="keyword">float</span> toTarget = <span class="type">Vector3</span>.Angle(_cop.transform.forward, _cop.transform.TransformVector(targetDirection));
+
+    <span class="comment">// Checking if to target and relative heading are within needed parameters and player has adequate speed for the behavior</span>
+    <span class="keyword">if</span> ((toTarget > 90 && relativeHead < 20) || _target.GetComponent&lt;<span class="type">Input</span>&gt;().MaxSpeed < 0.01f)
+    {
+        <span class="comment">// Running seek behavior if not</span>
+        _cop.destination = _target.transform.position;
+        <span class="keyword">return</span>;
+    }
+
+    _cop.speed = _maxSpeed;
+
+    <span class="comment">// Storing force to have agent look ahead of player</span>
+    <span class="keyword">float</span> lookAhead = targetDirection.magnitude / (_cop.speed + _target.GetComponent&lt;<span class="type">Input</span>&gt;().MaxSpeed);
+
+    <span class="comment">// Having agent pursue</span>
+    _cop.destination = _target.transform.position + _target.transform.forward * lookAhead;
+}</pre>
+							</div>
 						</div>
 
 						<!-- SECTION 3 — placeholder -->
