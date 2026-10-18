@@ -357,33 +357,59 @@
                             <p class="code-caption">The script takes in a list of points on the map and makes that the cop's patrol path.</p>
 							
 							<div class="code-block">
-<pre><span class="comment">// Paste your code here</span>
-<span class="keyword">public class</span> <span class="type">ExampleClass</span> : MonoBehaviour
+<pre><span class="comment">// Handles the functionality for the agent's patrolling behavior</span>
+<span class="keyword">private void</span> <span class="type">PatrolPath</span>()
 {
-    <span class="keyword">private void</span> Start()
+    <span class="comment">// Checking if PatrolPath is being called for the first time</span>
+    <span class="keyword">if</span> (!_patrolStarted)
     {
-        <span class="comment">// Your code goes here</span>
+        _navIter = -1;
+        _cop.speed = _maxSpeed;
+        _patrolStarted = <span class="keyword">true</span>;
     }
+
+    <span class="comment">// Creating a buffer once agent stops moving to not immediately skip idle</span>
+    <span class="keyword">if</span> (_cop.velocity == <span class="type">Vector3</span>.zero)
+        _bufferTime += <span class="type">Time</span>.deltaTime;
+
+    <span class="comment">// Don't run if agent hasn't reached path</span>
+    <span class="keyword">if</span> (!_hasReachedPath)
+        <span class="keyword">return</span>;
+
+    <span class="comment">// Guard so iter doesn't exceed the bounds of the nav points array</span>
+    <span class="keyword">if</span> (_hasReachedPath && _navIter == _navPoints.Length - 1)
+        _navIter = 0;
+    <span class="keyword">else</span>
+        <span class="comment">// Incrementing each time PatrolPath is called</span>
+        _navIter++;
+
+    <span class="comment">// Setting agents destination to be position of current patrol point</span>
+    _cop.destination = _navPoints[_navIter].transform.position;
+    _cop.transform.position = <span class="type">Vector3</span>.SmoothDamp(_cop.transform.position, _cop.nextPosition, <span class="keyword">ref</span> _velocity, 0.05f);
+
+    <span class="comment">// Storing current patrol path</span>
+    _patrolPath = _cop.path;
+
+    _inMotion = <span class="keyword">true</span>;
+    _hasReachedPath = <span class="keyword">false</span>;
 }</pre>
 							</div>
 						</div>
 
 						<!-- SECTION 3 — placeholder -->
 						<div class="code-section">
-							<h3>// 03 — System Name Here</h3>
+							<h3>// 03 — Placeholder</h3>
 							<p>
-								Add a third breakdown here. You can duplicate any of the section
-								patterns above — full-width screenshot, side-by-side, or just text
-								and a code block — whatever best shows off the work.
+								Placeholder text
 							</p>
 
 							<div class="screenshot-wrap">
 								<img src="images/looterland-screenshot3.png" alt="Screenshot 3" />
-								<p class="screenshot-caption">Caption describing what this screenshot shows</p>
+								<p class="screenshot-caption">Placeholder</p>
 							</div>
 
 							<div class="code-block">
-<pre><span class="comment">// Paste your code here</span></pre>
+<pre><span class="comment">// Placeholder</span></pre>
 							</div>
 						</div>
 
