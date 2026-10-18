@@ -346,16 +346,16 @@
 								</div>
 								<div class="split-text">
 									<p>
-										Describe this system or feature here. The image sits to the left
-										on desktop and stacks above on mobile. Replace this placeholder
-										with a real description of what you built.
+										The Patrol behavior is more complex. With the cop taking in a list of points on
+										the map to move towards and linger around before heading to the next. If the player
+										comes within a certain radius of the patrolling cop it will transition to a pursue behavior.
+										And should the player move too far away the cop will resume it's previous patrol.
 									</p>
-									<div class="tech-tags">
-										<span>Unity</span><span>C#</span><span>Add Your Tags</span>
-									</div>
 								</div>
 							</div>
-
+							
+                            <p class="code-caption">The script takes in a list of points on the map and makes that the cop's patrol path.</p>
+							
 							<div class="code-block">
 <pre><span class="comment">// Paste your code here</span>
 <span class="keyword">public class</span> <span class="type">ExampleClass</span> : MonoBehaviour
