@@ -623,13 +623,63 @@
 							<p>For the UI elements we have the player's score, which displays the how much money the player has racked up or lost in their
 							play session. We also have the timer display, it displays how much time the player has left before the game ends.</p>
 
-							<div class="screenshot-wrap">
-								<img src="images/looterland-screenshot3.png" alt="Screenshot 3" />
-								<p class="screenshot-caption">Placeholder</p>
+							<div class="split-row">
+								<div class="split-image">
+									<img src="images/looterland-screenshot3.png" alt="Screenshot 3" />
+								</div>
+								<div class="split-text">
+									<p>When the player presses Escape the Pause Menu gets activated in the UI and game is frozen. If the 
+									player presses it again or clicks the play button on the menu, the game time is restored and the menu is
+									deactivated.</p>
+								</div>
 							</div>
 
 							<div class="code-block">
-<pre><span class="comment">// Placeholder</span></pre>
+<pre><span class="keyword">public void</span> <span class="type">MenuCall</span>(<span class="type">InputAction</span>.CallbackContext context)
+{
+    <span class="comment">//Only running once while button is pressed</span>
+    <span class="keyword">if</span> (!context.started)
+        <span class="keyword">return</span>;
+
+    <span class="comment">//Check if game is already paused</span>
+    <span class="keyword">if</span> (_gameIsPaused)
+        Resume();
+    <span class="keyword">else</span>
+        Pause();
+}
+
+<span class="keyword">public void</span> <span class="type">Pause</span>()
+{
+    <span class="comment">//Activating pause menu</span>
+    _pauseMenuUI.SetActive(<span class="keyword">true</span>);
+    <span class="comment">//Freezing the game world</span>
+    <span class="type">Time</span>.timeScale = 0.0001f;
+
+    _gameIsPaused = <span class="keyword">true</span>;
+
+    OnPause.Invoke();
+
+    <span class="type">ReduceAudio</span> aud = FindObjectOfType&lt;<span class="type">ReduceAudio</span>&gt;();
+    <span class="keyword">if</span> (aud)
+        aud.PauseMenu();
+}
+
+<span class="comment">//Unpauses game</span>
+<span class="keyword">public void</span> <span class="type">Resume</span>()
+{
+    <span class="comment">//Deactivating pause menu</span>
+    _pauseMenuUI.SetActive(<span class="keyword">false</span>);
+    <span class="comment">//Unfreezing game world</span>
+    <span class="type">Time</span>.timeScale = 1.0f;
+
+    _gameIsPaused = <span class="keyword">false</span>;
+    OnUnPause.Invoke();
+
+
+    <span class="type">ReduceAudio</span> aud = FindObjectOfType&lt;<span class="type">ReduceAudio</span>&gt;();
+    <span class="keyword">if</span> (aud)
+        aud.StopPauseMenu();
+}</pre>
 							</div>
 						</div>
 
