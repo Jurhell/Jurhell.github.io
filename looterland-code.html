@@ -192,7 +192,6 @@
 						<!-- SECTION 1 — Cop AI Behaviors -->
 						<div class="code-section">
 							<h2>AI Behaviors</h2>
-							<h3>Cop Seek Behavior</h3>
 							<p>
 								There are two AI behaviors used for the cops in the game.</p>
 							<p>A simple Seek behavior is used for the main cop of the game. That causes it to constantly chase the player.</p>
@@ -203,6 +202,8 @@
 								<img src="images/Cop Action Shot.png" alt="Screenshot 1" />
 								<p class="screenshot-caption">Caption describing what this screenshot shows</p>
 							</div>
+							
+							<h3>Cop Seek Behavior</h3>
 
 							<p>
 								The Seek behavior itself is very simple as most the work is done by Unity in the NavMeshAgent class.
@@ -623,6 +624,8 @@
 							<p>For the UI elements we have the player's score, which displays the how much money the player has racked up or lost in their
 							play session. We also have the timer display, it displays how much time the player has left before the game ends.</p>
 
+							<h3>Pause Menu</h3>
+							
 							<div class="split-row">
 								<div class="split-image">
 									<img src="images/looterland-screenshot3.png" alt="Screenshot 3" />
@@ -679,6 +682,38 @@
     <span class="type">ReduceAudio</span> aud = FindObjectOfType&lt;<span class="type">ReduceAudio</span>&gt;();
     <span class="keyword">if</span> (aud)
         aud.StopPauseMenu();
+}</pre>
+							</div>
+
+							<p class="code-caption">The menu's other two buttons are a retry and quit button. When clicked both buttons restore 
+							the game time and reduce audio, but the retry button also reloads the main scene. While the quit button loads the main menu scene.</p>
+
+							<div class="code-block">
+<pre><span class="comment">//Reloads the current scene</span>
+<span class="keyword">public void</span> <span class="type">Retry</span>()
+{
+    <span class="type">ReduceAudio</span> aud = FindObjectOfType&lt;<span class="type">ReduceAudio</span>&gt;();
+    <span class="keyword">if</span> (aud)
+        aud.StopPauseMenu();
+
+    OnUnPause.Invoke();
+    <span class="comment">//Unfreezing game</span>
+    <span class="type">Time</span>.timeScale = 1.0f;
+    <span class="comment">//Loading current scene</span>
+    <span class="type">SceneManager</span>.LoadScene(<span class="type">SceneManager</span>.GetActiveScene().buildIndex);
+}
+
+<span class="comment">//Loads the first scene in the index (Main Menu)</span>
+<span class="keyword">public void</span> <span class="type">QuitMenu</span>()
+{
+    <span class="type">ReduceAudio</span> aud = FindObjectOfType&lt;<span class="type">ReduceAudio</span>&gt;();
+    <span class="keyword">if</span> (aud)
+        aud.StopPauseMenu();
+
+    OnUnPause.Invoke();
+    <span class="comment">//Restoring game time and loading main menu</span>
+    <span class="type">Time</span>.timeScale = 1.0f;
+    <span class="type">SceneManager</span>.LoadScene(0);
 }</pre>
 							</div>
 						</div>
