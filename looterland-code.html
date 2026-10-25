@@ -685,7 +685,7 @@
 }</pre>
 							</div>
 
-							<p class="code-caption">The menu's other two buttons are a retry and quit button. When clicked both buttons restore 
+							<p class="code-caption">The menu's other two buttons are a retry and quit button. When clicked both buttons restore
 							the game time and reduce audio, but the retry button also reloads the main scene. While the quit button loads the main menu scene.</p>
 
 							<div class="code-block">
@@ -715,6 +715,46 @@
     <span class="type">Time</span>.timeScale = 1.0f;
     <span class="type">SceneManager</span>.LoadScene(0);
 }</pre>
+							</div>
+
+							<p class="code-caption">The declarations for the class along with the player actions and functions tied to it.</p>
+
+							<div class="code-block">
+<pre><span class="keyword">public class</span> <span class="type">PauseMenu</span> : <span class="type">MonoBehaviour</span>
+{
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The pause menu."</span>)]
+    <span class="keyword">private</span> <span class="type">GameObject</span> _pauseMenuUI;
+
+    <span class="keyword">private</span> <span class="type">PlayerControls</span> _playerActions;
+    <span class="keyword">private</span> <span class="type">InputAction</span> _menu;
+
+    <span class="keyword">public static bool</span> _gameIsPaused = <span class="keyword">false</span>;
+
+    <span class="keyword">public</span> <span class="type">UnityEvent</span> OnPause;
+    <span class="keyword">public</span> <span class="type">UnityEvent</span> OnUnPause;
+
+    <span class="keyword">private void</span> <span class="type">Awake</span>()
+    {
+        <span class="comment">//Creating Player Controller</span>
+        _playerActions = <span class="keyword">new</span> <span class="type">PlayerControls</span>();
+        _pauseMenuUI.SetActive(<span class="keyword">false</span>);
+    }
+
+    <span class="keyword">private void</span> <span class="type">OnEnable</span>()
+    {
+        <span class="comment">//Storing and enabling pause action</span>
+        _menu = _playerActions.Menu.Pause;
+        _menu.Enable();
+
+        _menu.performed += MenuCall;
+    }
+
+    <span class="keyword">private void</span> <span class="type">OnDisable</span>()
+    {
+        <span class="comment">//Self explanatory</span>
+        _menu.Disable();
+    }
+</pre>
 							</div>
 						</div>
 
