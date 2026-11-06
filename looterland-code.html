@@ -780,16 +780,74 @@
 							<p>When the game is first booted up the first scene that is opened is the main menu scene. It showcases the title along with two
 							buttons, one when clicked takes the player to the main scene and another that closes the appication when clicked.</p>
 
+							<p>While transitioning to the main scene one of five images will be randomly selected from the loadingImages array and fade onto the 
+							screen for a few seconds.</p>
+
 							<div class="screenshot-wrap">
 								<img src="images/placeholder.png" alt="Screenshot" />
 							</div>
 
 							<div class="code-block">
-<pre><span class="comment">// Placeholder</span></pre>
-							</div>
-						</div>
+<pre><span class="keyword">public class</span> <span class="type">MainMenu</span> : <span class="type">MonoBehaviour</span>
+{
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The canvas prefab that holds the main menu."</span>)]
+    <span class="keyword">private</span> <span class="type">CanvasGroup</span> _mainMenuCanvas;
 
-						<hr />
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The parent holding the images and background."</span>)]
+    <span class="keyword">private</span> <span class="type">GameObject</span> _transitionImages;
+
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"How long the transition will last before main scene is loaded."</span>)]
+    <span class="keyword">private float</span> _transitionTime = 3f;
+
+    [Space]
+
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The images that will be displayed in between loaded scenes."</span>)]
+    <span class="keyword">private</span> <span class="type">Image</span>[] _loadingImages;
+
+    <span class="keyword">private</span> <span class="type">Image</span> _selectedImage;
+
+    <span class="keyword">public void</span> <span class="type">PlayGame</span>()
+    {
+        <span class="comment">//Starting a coroutine that loads the main scene after enough time has passed</span>
+        StartCoroutine(Load(() =&gt; <span class="type">SceneManager</span>.LoadScene(<span class="type">SceneManager</span>.GetActiveScene().buildIndex + 1)));
+    }
+
+    <span class="keyword">public void</span> <span class="type">QuitGame</span>()
+    {
+        Application.Quit();
+    }
+
+    <span class="comment">//Grabs a random image from the loadingImages array and fades it onto the screen</span>
+    <span class="keyword">private void</span> <span class="type">SelectRandomImage</span>()
+    {
+        <span class="comment">//Storing a random int</span>
+        <span class="keyword">int</span> rand = <span class="type">UnityEngine</span>.Random.Range(0, 8);
+
+        _transitionImages.SetActive(<span class="keyword">true</span>);
+
+        <span class="comment">//Loading an image at the index of the random int</span>
+        _loadingImages[rand].enabled = <span class="keyword">true</span>;
+        <span class="comment">//Storing image</span>
+        _selectedImage = _loadingImages[rand];
+
+        <span class="comment">//Setting images alpha to zero</span>
+        _selectedImage.DOFade(0f, 0f);
+        <span class="comment">//Fading image in</span>
+        _selectedImage.DOFade(1f, 3f);
+    }
+
+    <span class="comment">//Grabs a random image before waiting and performing action callback</span>
+    <span class="keyword">private</span> <span class="type">IEnumerator</span> <span class="type">Load</span>(<span class="type">Action</span> callback)
+    {
+        SelectRandomImage();
+        <span class="keyword">yield return new</span> <span class="type">WaitForSecondsRealtime</span>(_transitionTime);
+        callback();
+    }
+}</pre>
+						</div>
+					</div>
+
+					<hr />
 						<ul class="actions">
 							<li><a href="looterland-overview.html" class="button primary">View Overview</a></li>
 							<li><a href="index.html#two" class="button">Back to Projects</a></li>
