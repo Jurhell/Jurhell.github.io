@@ -847,6 +847,73 @@
 						</div>
 					</div>
 
+						<!-- SECTION 5 -->
+						<div class="code-section">
+							<h3>EndState Menu</h3>
+
+							<p>Once the in game timer runs out the end state is called, the game is frozen, and the end screen UI is enabled. 
+							On the end screen the player is then shown their final score and is graded. To the right of the score are two buttons, 
+							one to retry and another to return to the main menu scene.</p>
+
+							<div class="code-block">
+<pre><span class="keyword">public class</span> <span class="type">EndState</span> : <span class="type">MonoBehaviour</span>
+{
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The UI canvas for the ending screen."</span>)]
+    <span class="keyword">private</span> <span class="type">GameObject</span> _endScreenUI;
+
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The UI prefab."</span>)]
+    <span class="keyword">private</span> <span class="type">GameObject</span> _ui;
+
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The player's collider."</span>)]
+    <span class="keyword">private</span> <span class="type">CapsuleCollider</span> _player;
+
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The EndScoreUI within the End State prefab."</span>)]
+    <span class="keyword">private</span> <span class="type">EndScoreUI</span> _score;
+
+    <span class="keyword">private bool</span> _called;
+
+    <span class="keyword">private void</span> <span class="type">Awake</span>()
+    {
+        _called = <span class="keyword">false</span>;
+    }
+
+    <span class="keyword">public void</span> <span class="type">EndingCall</span>()
+    {
+        <span class="keyword">if</span> (_called)
+            <span class="keyword">return</span>;
+
+        _called = <span class="keyword">true</span>;
+
+        <span class="comment">//Enabling endscreenUI and disabling UI prefab</span>
+        _endScreenUI.SetActive(<span class="keyword">true</span>);
+        _ui.SetActive(<span class="keyword">false</span>);
+
+        _score.ShowResults();
+        _score.ScoreGrade();
+
+        <span class="type">Time</span>.timeScale = 0f;
+    }
+
+    <span class="comment">//Reloads the current scene</span>
+    <span class="keyword">public void</span> <span class="type">Retry</span>()
+    {
+        <span class="comment">//Loading current scene</span>
+        <span class="type">SceneManager</span>.LoadScene(<span class="type">SceneManager</span>.GetActiveScene().buildIndex);
+        <span class="comment">//Unfreezing game</span>
+        <span class="type">Time</span>.timeScale = 1f;
+    }
+
+    <span class="comment">//Loads the first scene in the index (Main Menu)</span>
+    <span class="keyword">public void</span> <span class="type">QuitMenu</span>()
+    {
+        <span class="comment">//Restoring game time and loading main menu</span>
+        <span class="type">Time</span>.timeScale = 1f;
+        <span class="type">SceneManager</span>.LoadScene(0);
+    }
+}</pre>
+							</div>
+						</div>
+
 					<hr />
 						<ul class="actions">
 							<li><a href="looterland-overview.html" class="button primary">View Overview</a></li>
