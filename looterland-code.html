@@ -927,12 +927,12 @@
 							gets less than 20 seconds the Timer UI becomes red and begins to shake to showcase urgency. After reaching zero
 							the UI is disabled and the rest is handled in a separated script.</p>
 
-							<div class="split-row">
+							<div class="split-row" style="align-items: stretch;">
 								<div class="split-image">
-									<img src="images/LooterLand Timer.png" alt="Timer Screenshot 1" />
+									<img src="images/LooterLand Timer.png" alt="Timer Screenshot 1" style="height:220px; object-fit:cover;" />
 								</div>
 								<div class="split-image">
-									<img src="images/Hurry Up Timer.png" alt="Timer Screenshot 2" />
+									<img src="images/Hurry Up Timer.png" alt="Timer Screenshot 2" style="height:220px; object-fit:cover;" />
 								</div>
 							</div>
 
@@ -1017,7 +1017,55 @@
 							</div>
 						</div>
 
-					<hr />
+					<!-- SECTION 7 -->
+						<div class="code-section">
+							<h3>Time's Up Functionality</h3>
+
+							<p>When the countdown reaches zero in the timer script the UI is replaced with a different one that says Time's Up and the game's
+								end state is invoked.</p>
+
+							<div class="screenshot-wrap">
+								<img src="images/placeholder.png" alt="Screenshot" />
+							</div>
+
+							<div class="code-block">
+<pre><span class="keyword">public class</span> <span class="type">TimesUp</span> : <span class="type">MonoBehaviour</span>
+{
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The display for the countdown."</span>)]
+    <span class="keyword">private</span> <span class="type">GameObject</span> _timerDisplay;
+
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The display for when the timer reaches zero."</span>)]
+    <span class="keyword">private</span> <span class="type">GameObject</span> _timesUp;
+
+    <span class="keyword">public</span> <span class="type">UnityEvent</span> OnCountdownEnd;
+
+    <span class="comment">// Update is called once per frame</span>
+    <span class="keyword">void</span> <span class="type">Update</span>()
+    {
+        <span class="comment">//Guard Clause</span>
+        <span class="keyword">if</span> (!_timerDisplay)
+            <span class="keyword">return</span>;
+
+        <span class="comment">//Storing countdown from timer script</span>
+        <span class="keyword">float</span> countdown = _timerDisplay.GetComponent&lt;<span class="type">TimerUI</span>&gt;().Countdown;
+
+        <span class="keyword">if</span> (countdown &lt;= 0)
+            TimeIsUp();
+    }
+
+    <span class="comment">//Handles what the game should do after the timer reaches 0</span>
+    <span class="keyword">private void</span> <span class="type">TimeIsUp</span>()
+    {
+        <span class="comment">//Activating times up display</span>
+        _timesUp.SetActive(<span class="keyword">true</span>);
+        <span class="comment">//Invoking countdown event</span>
+        OnCountdownEnd.Invoke();
+    }
+}</pre>
+							</div>
+						</div>
+
+						<hr />
 						<ul class="actions">
 							<li><a href="looterland-overview.html" class="button primary">View Overview</a></li>
 							<li><a href="index.html#two" class="button">Back to Projects</a></li>
