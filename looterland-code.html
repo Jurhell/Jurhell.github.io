@@ -918,6 +918,96 @@
 							</div>
 						</div>
 
+						<!-- SECTION 6 -->
+						<div class="code-section">
+							<h3>Timer UI Functionality</h3>
+
+							<p>The UI displays a timer in the top right corner of the screen that begins at 1 minute and counts down to zero. 
+							The text is formatted to display the timer similarly to how a digital clock would show the countdown. Once the countdown 
+							gets less than 20 seconds the Timer UI becomes red and begins to shake to showcase urgency. After reaching zero
+							the UI is disabled and the rest is handled in a separated script.</p>
+
+							<div class="code-block">
+<pre>[<span class="type">RequireComponent</span>(<span class="keyword">typeof</span>(<span class="type">TextMeshProUGUI</span>))]
+<span class="keyword">public class</span> <span class="type">TimerUI</span> : <span class="type">MonoBehaviour</span>
+{
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The Textmesh that will display the timer countdown to the player."</span>)]
+    <span class="keyword">private</span> <span class="type">TextMeshProUGUI</span> _timerDisplay;
+
+    [<span class="type">SerializeField</span>, <span class="type">Tooltip</span>(<span class="string">"The panel holding the timer and it's background image"</span>)]
+    <span class="keyword">private</span> <span class="type">GameObject</span> _timerUI;
+
+    [Space]
+
+    [<span class="type">Tooltip</span>(<span class="string">"The length of the countdown in minutes"</span>)]
+    [<span class="type">SerializeField</span>, Min(0)]
+    <span class="keyword">private int</span> _minutes = 1;
+
+    [<span class="type">Tooltip</span>(<span class="string">"The length of the countdown in seconds"</span>)]
+    [<span class="type">SerializeField</span>, Min(0)]
+    <span class="keyword">private int</span> _seconds = 0;
+
+    [<span class="type">Tooltip</span>(<span class="string">"When the timer will begin to shake to warn the player that time is almost up."</span>)]
+    [<span class="type">SerializeField</span>, Min(0)]
+    <span class="keyword">private float</span> _warningTime = 20f;
+
+    <span class="keyword">private float</span> _countdown;
+    <span class="keyword">private</span> <span class="type">Vector3</span> _test = <span class="keyword">new</span> <span class="type">Vector3</span>(0.32f, 0.275f, 0f);
+
+    <span class="comment">//Property for timer countdown. [Read-Only]</span>
+    <span class="keyword">public float</span> Countdown =&gt; _countdown;
+
+    <span class="keyword">void</span> <span class="type">Start</span>()
+    {
+        <span class="comment">//Guard clause that caps seconds at 60</span>
+        <span class="keyword">if</span> (_seconds >= 60)
+            _seconds = 60;
+
+        <span class="comment">//Multiplies minutes value by 60 and adds the seconds value to it</span>
+        _countdown = (60 * _minutes) + _seconds;
+    }
+
+    <span class="comment">// Update is called once per frame</span>
+    <span class="keyword">void</span> <span class="type">Update</span>()
+    {
+        <span class="comment">//Guard clause that won't run update without a timer display</span>
+        <span class="keyword">if</span> (!_timerDisplay || !_timerUI)
+            <span class="keyword">return</span>;
+
+        <span class="comment">//Countdown decrements with delta time each update call if above 0</span>
+        <span class="keyword">if</span> (_countdown > 0.0f)
+            _countdown -= <span class="type">Time</span>.deltaTime;
+
+        <span class="comment">//Converts countdown value into minutes and seconds</span>
+        <span class="keyword">int</span> minutes = <span class="type">Mathf</span>.FloorToInt(_countdown / 60);
+        <span class="keyword">int</span> seconds = <span class="type">Mathf</span>.FloorToInt(_countdown % 60);
+
+        <span class="comment">//Displays the minutes and seconds in the timer ui</span>
+        _timerDisplay.text = <span class="keyword">string</span>.Format(<span class="string">"{0:00}:{1:00}"</span>, minutes, seconds);
+
+        <span class="comment">//Shaking timer if countdown is less than warning time</span>
+        <span class="keyword">if</span> (_countdown &lt;= _warningTime)
+            HurryUp();
+
+        <span class="keyword">if</span> (_countdown &lt;= 0.0f)
+        {
+            _timerDisplay.enabled = <span class="keyword">false</span>;
+            _timerUI.SetActive(<span class="keyword">false</span>);
+        }
+    }
+
+    <span class="comment">//Functionality for when the player is almost out of time</span>
+    <span class="keyword">private void</span> <span class="type">HurryUp</span>()
+    {
+        <span class="comment">//Making timer red</span>
+        _timerDisplay.DOColor(<span class="type">Color</span>.red, 1f);
+        <span class="comment">//Shaking timer canvas</span>
+        _timerUI.transform.DOShakePosition(1f, _test, 10, 75, <span class="keyword">false</span>, <span class="keyword">true</span>, <span class="type">ShakeRandomnessMode</span>.Harmonic);
+    }
+}</pre>
+							</div>
+						</div>
+
 					<hr />
 						<ul class="actions">
 							<li><a href="looterland-overview.html" class="button primary">View Overview</a></li>
